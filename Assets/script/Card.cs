@@ -7,12 +7,10 @@ public class Card : MonoBehaviour {
 
     int number;
     string color;
-    string shape;
+    public string shape;
     string name;
     private Image image;
     private Sprite sprite;
-
-
 
     public void Load(CardData _cardData){
         name = _cardData.name;
