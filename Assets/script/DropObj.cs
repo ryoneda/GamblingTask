@@ -5,12 +5,17 @@ using UnityEngine.EventSystems;
 
 public class DropObj : MonoBehaviour, IDropHandler
 {
+    int cardNum;
+
     Field fieldScript;
     CardGenerator cgScript;
+    GameRule gameRule;
     GameObject fieldObj;
     GameObject cgObj;
     GameObject handObj;
     public GameObject cardPrefab;
+    public CardData ansCardData;
+    public int droppedField;
 
     List<CardData> cardDataList = new List<CardData>(){
         new CardData( "a", 1, "test", "circle"),
@@ -22,57 +27,67 @@ public class DropObj : MonoBehaviour, IDropHandler
 
        public void OnDrop ( PointerEventData data )
     {
-        //Debug.Log("OnDrop");
+        
+        gameRule = GameObject.Find ("Rule").GetComponent<GameRule>();
+
         var raycastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll ( data, raycastResults );
-        //Debug.Log(raycastResults);
+
         foreach ( var hit in raycastResults )
         {
             if ( hit.gameObject.CompareTag ( "Field0" ) )
             {             
                 ChangeField(0, hit);
                 ChangeHand();
-
+                Rule(gameRule, 0);
                 
 
             } else if ( hit.gameObject.CompareTag ( "Field1" ) )
             {
                 ChangeField(1, hit);
                 ChangeHand();
+                Rule(gameRule, 1);
+                
 
             } else if ( hit.gameObject.CompareTag ( "Field2" ) )
             {
                 ChangeField(2, hit);
                 ChangeHand();
+                Rule(gameRule, 2);
+                
 
             } else if ( hit.gameObject.CompareTag ( "Field3" ) )
             {
                 ChangeField(3, hit);
                 ChangeHand();
+                Rule(gameRule, 3);
+                
 
             }
         }
     }
 
     void ChangeField(int i, RaycastResult hit){
-     //transform.position = hit.gameObject.transform.position;
                 
-                Card card = hit.gameObject.GetComponent<Card>();
-                //fieldにあるカードの情報を取得
-                fieldObj = GameObject.Find ("Field");
-                fieldScript = fieldObj.GetComponent<Field>();
-                List<Card> fieldCardList = fieldScript.cardList;         
+        //fieldにあるカードの情報を取得
+        fieldObj = GameObject.Find ("Field");
+        fieldScript = fieldObj.GetComponent<Field>();
+        List<Card> fieldCardList = fieldScript.cardList;         
 
-                //handにあるカードの情報を取得
-                cgObj = GameObject.Find ("CardGenerator");
-                cgScript = cgObj.GetComponent<CardGenerator>();
-                int cardNum = cgScript.hand_num;
+        //handにあるカードの情報を取得
+        cgObj = GameObject.Find ("CardGenerator");
+        cgScript = cgObj.GetComponent<CardGenerator>();
+        cardNum = cgScript.hand_num;
 
-                //handの情報をdrop先のfieldへ格納
-                card.Load(cardDataList[cardNum]);
-                hit.gameObject.name = cardDataList[cardNum].name;
-                fieldCardList[i] = card;
-                
+        //handの情報をdrop先のfieldへ格納
+        Card card = hit.gameObject.GetComponent<Card>();
+        card.Load(cardDataList[cardNum]);
+        hit.gameObject.name = cardDataList[cardNum].name;
+        fieldCardList[i] = card;
+        
+        //handの情報を答えに
+        ansCardData = cardDataList[cardNum];
+        droppedField = i;
 	}
 
     void ChangeHand(){
@@ -86,14 +101,13 @@ public class DropObj : MonoBehaviour, IDropHandler
         Destroy(handObj);
 
         cgScript.Start();
+	}
 
-        /*
-        Card card =handObj.GetComponent<Card>();
-
-        int i = Random.Range(0, 4);
-        card.Load(cardDataList[i]);
-        handObj.name = cardDataList[i].name;
-        */
-    
+    void Rule(GameRule gameRule, int i){
+        gameRule.fieldNum = i;
+        gameRule.ansNumber = cardDataList[cardNum].number;
+        gameRule.ansColor = cardDataList[cardNum].color;
+        gameRule.ansShape = cardDataList[cardNum].shape;
+        gameRule.MainRule();
 	}
 }

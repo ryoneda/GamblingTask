@@ -14,18 +14,28 @@ public class Field : MonoBehaviour
     };
     
     void Start(){
-        for(int i=0; i<4; i++){
+     for(int i=0; i<8; i++){
 
+            if(i<4){
+            GameObject cardObj = Instantiate(cardPrefab);
+            Card card = cardObj.GetComponent<Card>();
+            cardObj.name = cardDataList[i].name;
+            cardObj.AddComponent<DropObj>();
+            card.Load(cardDataList[i]);
+            this.Add(card);     
+			} else if(4<=i){
             int j = Random.Range(0, 4);
 
             GameObject cardObj = Instantiate(cardPrefab);
             Card card = cardObj.GetComponent<Card>();
-            cardObj.tag = "Field"+i;
+            cardObj.tag = "Field"+(i-4);
             cardObj.name = cardDataList[j].name;
             cardObj.AddComponent<DropObj>();
             card.Load(cardDataList[j]);
             this.Add(card);
-		}   
+			}
+            
+		}      
     }
     void Add(Card _card){
      _card.transform.SetParent(this.transform);
