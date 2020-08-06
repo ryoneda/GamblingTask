@@ -16,16 +16,17 @@ public class DropObj : MonoBehaviour, IDropHandler
     public GameObject cardPrefab;
     public CardData ansCardData;
     public int droppedField;
-
-    List<CardData> cardDataList = new List<CardData>(){
-        new CardData( "a", 1, "test", "circle"),
-        new CardData( "b", 2, "test2", "triangle"),
-        new CardData( "c", 3, "test2", "triangle"),
-        new CardData( "d", 3, "test3", "star")
-    };
+    List<CardData> cardDataList;
 
 
-       public void OnDrop ( PointerEventData data )
+    void Start(){
+        cgObj = GameObject.Find ("CardGenerator");
+        cgScript = cgObj.GetComponent<CardGenerator>();
+        cardDataList = cgScript.cardDataList;
+	}
+
+
+    public void OnDrop ( PointerEventData data )
     {
         
         gameRule = GameObject.Find ("Rule").GetComponent<GameRule>();

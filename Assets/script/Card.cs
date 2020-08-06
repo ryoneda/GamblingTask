@@ -18,7 +18,7 @@ public class Card : MonoBehaviour {
         color = _cardData.color;
         shape = _cardData.shape;
 
-        sprite = Resources.Load < Sprite > (color);
+        sprite = Resources.Load < Sprite > (name);
         image = this.GetComponent<Image>();
         image.sprite = sprite;
     }
