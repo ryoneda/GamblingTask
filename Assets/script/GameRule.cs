@@ -17,6 +17,10 @@ public class GameRule : MonoBehaviour
     int totalCategory;
 
     TextFeedback textFeedback;
+    GameObject gameFinish;
+    public GameObject FinishPrefab;
+    public GameObject PlayCanvasPrefab;
+
 
     List<CardData> displayCardList = new List<CardData>(){
         new CardData( "RC1", 1, "red", "circle"),
@@ -28,6 +32,10 @@ public class GameRule : MonoBehaviour
 
     void Start(){
         ansType = Random.Range(1, 4);
+    }
+
+    void Update(){
+        if (Input.GetKey(KeyCode.Escape)) FinishButton();
     }
 
     public void MainRule(){
@@ -100,8 +108,9 @@ public class GameRule : MonoBehaviour
 
         if(displayCardList[i].number == ans){
             textFeedback.feedback="正解";
-            Debug.Log("正解");
             continuous++;
+            Debug.Log("正解数　" + continuous);
+
 		} else {
             textFeedback.feedback="はずれ";
             Debug.Log("はずれ");
@@ -115,8 +124,8 @@ public class GameRule : MonoBehaviour
 
         if(displayCardList[i].color == ans){
             textFeedback.feedback="正解";
-            Debug.Log("正解");
             continuous++;
+            Debug.Log("正解数　" + continuous);
 		} else {
             textFeedback.feedback="はずれ";
             Debug.Log("はずれ");
@@ -130,8 +139,8 @@ public class GameRule : MonoBehaviour
 
         if(displayCardList[i].shape == ans){
             textFeedback.feedback="正解";
-            Debug.Log("正解");
             continuous++;
+            Debug.Log("正解数　" + continuous);
 		} else {
             textFeedback.feedback="はずれ";
             Debug.Log("はずれ");
@@ -161,6 +170,24 @@ public class GameRule : MonoBehaviour
 			}  
 		}
         totalCategory++;
+        continuous=0;
+        Debug.Log("totalCategory "+totalCategory);
+        if (totalCategory==1) GameFinish();
+
 	}
 
+    void GameFinish(){
+    
+        gameFinish = Instantiate(FinishPrefab);
+        Destroy(PlayCanvasPrefab);
+        //button = gameFinish.GetComponentsInChildren<Button>();
+        //buttons[0].onClick.AddListener(FinishButton);
+
+
+	}
+
+    void FinishButton(){
+        UnityEditor.EditorApplication.isPlaying = false;
+        UnityEngine.Application.Quit();
+    }
 }

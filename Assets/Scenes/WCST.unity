@@ -1873,6 +1873,9 @@ MonoBehaviour:
   ansColor: 
   ansShape: 
   dropObj: {fileID: 0}
+  FinishPrefab: {fileID: 7830389597435315066, guid: b1861f3a59800404a9976a9c2d0f23c0,
+    type: 3}
+  PlayCanvasPrefab: {fileID: 724272752}
 --- !u!4 &2051301529
 Transform:
   m_ObjectHideFlags: 0

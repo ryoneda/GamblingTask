@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - DroppableField
+  - Field0
+  - Field1
+  - Field2
+  - Field3
+  - hand
   layers:
   - Default
   - TransparentFX

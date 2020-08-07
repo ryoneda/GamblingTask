@@ -9,6 +9,11 @@ public class TextFeedback : MonoBehaviour
     public string feedback;
     float seconds;
 
+    void Start(){
+        
+        
+	}
+
     void Update(){
 
         this.text = this.GetComponent<Text>();
