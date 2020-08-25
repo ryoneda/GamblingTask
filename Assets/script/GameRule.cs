@@ -21,6 +21,12 @@ public class GameRule : MonoBehaviour
     public GameObject FinishPrefab;
     public GameObject PlayCanvasPrefab;
 
+    float time;
+    GameObject WriteCSV;
+    ExportCSV ExportCSV;
+
+    GameObject cgObj;
+    CardGenerator cgScript;
 
     List<CardData> displayCardList = new List<CardData>(){
         new CardData( "RC1", 1, "red", "circle"),
@@ -32,6 +38,10 @@ public class GameRule : MonoBehaviour
 
     void Start(){
         ansType = Random.Range(1, 4);
+        WriteCSV = GameObject.Find("WriteCSV");
+        ExportCSV = WriteCSV.GetComponent<ExportCSV>();
+        cgObj = GameObject.Find ("CardGenerator");
+        cgScript = cgObj.GetComponent<CardGenerator>();
     }
 
     void Update(){
@@ -105,46 +115,55 @@ public class GameRule : MonoBehaviour
     void AnsCheckNum(int i, int ans){
 
         textFeedback = GameObject.Find ("Text").GetComponent<TextFeedback>();
+        time += Time.deltaTime;
 
         if(displayCardList[i].number == ans){
             textFeedback.feedback="正解";
             continuous++;
             Debug.Log("正解数　" + continuous);
+            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
 
 		} else {
             textFeedback.feedback="はずれ";
             Debug.Log("はずれ");
             continuous = 0;
+            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "Out");
 	    }
 	}
 
     void AnsCheckColor(int i, string ans){
 
         textFeedback = GameObject.Find ("Text").GetComponent<TextFeedback>();
+        time += Time.deltaTime;
 
         if(displayCardList[i].color == ans){
             textFeedback.feedback="正解";
             continuous++;
             Debug.Log("正解数　" + continuous);
+            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
 		} else {
             textFeedback.feedback="はずれ";
             Debug.Log("はずれ");
             continuous = 0;
+            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "Out");
 	    }
 	}
     
     void AnsCheckShape(int i, string ans){
 
         textFeedback = GameObject.Find ("Text").GetComponent<TextFeedback>();
+        time += Time.deltaTime;
 
         if(displayCardList[i].shape == ans){
             textFeedback.feedback="正解";
             continuous++;
             Debug.Log("正解数　" + continuous);
+            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
 		} else {
             textFeedback.feedback="はずれ";
             Debug.Log("はずれ");
             continuous = 0;
+            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "Out");
 	    }
 	}
 
@@ -179,6 +198,7 @@ public class GameRule : MonoBehaviour
     void GameFinish(){
     
         gameFinish = Instantiate(FinishPrefab);
+        ExportCSV.FinishWritingCSV();
         Destroy(PlayCanvasPrefab);
         //button = gameFinish.GetComponentsInChildren<Button>();
         //buttons[0].onClick.AddListener(FinishButton);
