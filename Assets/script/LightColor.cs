@@ -24,7 +24,7 @@ public class LightColor : MonoBehaviour
         sdnn = GameObject.Find ("Database").GetComponent<ToMySQL>().sdnn;
         baseline = GameObject.Find ("Database").GetComponent<ToMySQL>().baseline;
         float score=(float)((sdnn-baseline)/(300-baseline))*255;
-        Debug.Log(score);
+        //Debug.Log(score);
         if(score>0){
             blue=0;
             if(score>255){
@@ -32,7 +32,7 @@ public class LightColor : MonoBehaviour
 			}
             if(red <= score){
                 lt.color = new Color(red, 0, 0);
-                Debug.Log(red);
+                //Debug.Log(red);
                 red+=0.1f;
 			}
 		}
@@ -43,7 +43,7 @@ public class LightColor : MonoBehaviour
 			}
             if(score <= blue){
                 lt.color = new Color(0, 0, -blue);
-                Debug.Log(blue);
+                //Debug.Log(blue);
                 blue-=0.1f;
 			}
 		}
