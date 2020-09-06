@@ -9,6 +9,7 @@ public class LightColor : MonoBehaviour
     //GameObject mySQLObj;
     double sdnn;
     double baseline;
+    double max;
     float red=0;
     float blue=0;
 
@@ -23,7 +24,8 @@ public class LightColor : MonoBehaviour
         //mysqlScript = mySQLObj.GetComponent<MySQL>();
         sdnn = GameObject.Find ("Database").GetComponent<ToMySQL>().sdnn;
         baseline = GameObject.Find ("Database").GetComponent<ToMySQL>().baseline;
-        float score=(float)((sdnn-baseline)/(300-baseline))*255;
+        max = GameObject.Find ("Database").GetComponent<ToMySQL>().max;
+        float score=(float)((sdnn-baseline)/(max-baseline))*255;
         //Debug.Log(score);
         if(score>0){
             blue=0;

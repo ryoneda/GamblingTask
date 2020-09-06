@@ -23,10 +23,12 @@ public class OSC : MonoBehaviour
                 string allNumStr = "0123456789";
                 if (true)
                 {
-                    Debug.Log( "aaa");
+                    //Debug.Log( "aaa");
                     int sentInt;
                     int.TryParse(inputStr, out sentInt);
-                    OSCHandler.Instance.SendMessageToClient("sonic", "/Int", 2);
+                    List<object> values = new List<object>();
+                    values.AddRange(new object[]{10, 20, 30});
+                    OSCHandler.Instance.SendMessageToClient("sonic", "/Int", 120);
                 }
             }
         }

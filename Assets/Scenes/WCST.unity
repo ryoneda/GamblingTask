@@ -1115,6 +1115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sdnn: 0
   baseline: 0
+  max: 0
 --- !u!4 &1299477830
 Transform:
   m_ObjectHideFlags: 0
@@ -2026,7 +2027,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2020071548}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc2cfdb6d97a6cf45b0b083f72a9d7a3, type: 3}
   m_Name: 
@@ -2044,7 +2045,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400096, guid: 412b92d4feeb9c548bfa98f62c4d1022, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.269
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 400096, guid: 412b92d4feeb9c548bfa98f62c4d1022, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2143,8 +2144,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3314314, y: 1.6789734, z: 0.8469408}
-  m_Center: {x: -0.020516792, y: 0.7257156, z: -0.076529644}
+  m_Size: {x: 0.56916213, y: 0.128196, z: 0.8469408}
+  m_Center: {x: -0.006622374, y: -0.0496732, z: -0.07652962}
 --- !u!54 &2048971938
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2198,6 +2199,8 @@ MonoBehaviour:
   FinishPrefab: {fileID: 7830389597435315066, guid: b1861f3a59800404a9976a9c2d0f23c0,
     type: 3}
   PlayCanvasPrefab: {fileID: 724272752}
+  coinPrefab: {fileID: 835122076615935983, guid: ad67e45f17ffb8e4584db49e3fea9978,
+    type: 3}
 --- !u!4 &2051301529
 Transform:
   m_ObjectHideFlags: 0

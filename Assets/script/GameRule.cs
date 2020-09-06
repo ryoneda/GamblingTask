@@ -27,6 +27,7 @@ public class GameRule : MonoBehaviour
 
     GameObject cgObj;
     CardGenerator cgScript;
+    public GameObject coinPrefab;
 
     List<CardData> displayCardList = new List<CardData>(){
         new CardData( "RC1", 1, "red", "circle"),
@@ -122,7 +123,7 @@ public class GameRule : MonoBehaviour
             continuous++;
             Debug.Log("正解数　" + continuous);
             ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
-
+            makeCoin();
 		} else {
             textFeedback.feedback="はずれ";
             Debug.Log("はずれ");
@@ -141,6 +142,7 @@ public class GameRule : MonoBehaviour
             continuous++;
             Debug.Log("正解数　" + continuous);
             ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
+            makeCoin();
 		} else {
             textFeedback.feedback="はずれ";
             Debug.Log("はずれ");
@@ -158,6 +160,7 @@ public class GameRule : MonoBehaviour
             textFeedback.feedback="正解";
             continuous++;
             Debug.Log("正解数　" + continuous);
+            makeCoin();
             ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
 		} else {
             textFeedback.feedback="はずれ";
@@ -191,7 +194,7 @@ public class GameRule : MonoBehaviour
         totalCategory++;
         continuous=0;
         Debug.Log("totalCategory "+totalCategory);
-        if (totalCategory==1) GameFinish();
+        if (totalCategory==10) GameFinish();
 
 	}
 
@@ -202,8 +205,13 @@ public class GameRule : MonoBehaviour
         Destroy(PlayCanvasPrefab);
         //button = gameFinish.GetComponentsInChildren<Button>();
         //buttons[0].onClick.AddListener(FinishButton);
+	}
 
-
+    void makeCoin(){
+        for(int i=0; i<100; i++){
+            var vec1 = new Vector3(2.6f,3f,1.4f);
+            GameObject coinObj = Instantiate(coinPrefab, vec1, new Quaternion(Random.Range(0f, 64f), Random.Range(0f, 64f), Random.Range(0f, 64f), 1.0f));
+	    }
 	}
 
     void FinishButton(){

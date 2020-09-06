@@ -23,11 +23,13 @@ public class DragObj : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
     }
     public void OnDrag(PointerEventData data){
         transform.position = data.position;
+        transform.localScale = new Vector2(1.2f,1.2f);
     }
     
     public void OnEndDrag(PointerEventData data){
         transform.SetParent(parentTransform);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
         transform.position = prevPos;
+        transform.localScale = new Vector2(1,1);
     }   
 }
