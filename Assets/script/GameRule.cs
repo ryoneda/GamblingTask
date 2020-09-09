@@ -17,6 +17,7 @@ public class GameRule : MonoBehaviour
     int totalCategory;
 
     TextFeedback textFeedback;
+    ScoreFeedback scoreFeedback;
     GameObject gameFinish;
     public GameObject FinishPrefab;
     public GameObject PlayCanvasPrefab;
@@ -28,6 +29,10 @@ public class GameRule : MonoBehaviour
     GameObject cgObj;
     CardGenerator cgScript;
     public GameObject coinPrefab;
+
+    List<GameObject> coin_list = new List<GameObject>();
+
+    int score = 0;
 
     List<CardData> displayCardList = new List<CardData>(){
         new CardData( "RC1", 1, "red", "circle"),
@@ -43,6 +48,9 @@ public class GameRule : MonoBehaviour
         ExportCSV = WriteCSV.GetComponent<ExportCSV>();
         cgObj = GameObject.Find ("CardGenerator");
         cgScript = cgObj.GetComponent<CardGenerator>();
+
+        scoreFeedback = GameObject.Find ("Score").GetComponent<ScoreFeedback>();
+
     }
 
     void Update(){
@@ -122,12 +130,17 @@ public class GameRule : MonoBehaviour
             textFeedback.feedback="正解";
             continuous++;
             Debug.Log("正解数　" + continuous);
-            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
             makeCoin();
+            score = CalcScore(score);
+            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
+            
 		} else {
             textFeedback.feedback="はずれ";
-            Debug.Log("はずれ");
+            //Debug.Log("はずれ");
             continuous = 0;
+            deleteCoin();
+            Debug.Log("削除");
+            score = CalcScore(score);
             ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "Out");
 	    }
 	}
@@ -141,12 +154,17 @@ public class GameRule : MonoBehaviour
             textFeedback.feedback="正解";
             continuous++;
             Debug.Log("正解数　" + continuous);
-            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
             makeCoin();
+            score = CalcScore(score);
+            ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
+            
 		} else {
             textFeedback.feedback="はずれ";
-            Debug.Log("はずれ");
+            //Debug.Log("はずれ");
             continuous = 0;
+            deleteCoin();
+            Debug.Log("削除");
+            score = CalcScore(score);
             ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "Out");
 	    }
 	}
@@ -161,11 +179,15 @@ public class GameRule : MonoBehaviour
             continuous++;
             Debug.Log("正解数　" + continuous);
             makeCoin();
+            score = CalcScore(score);
             ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "OK");
 		} else {
             textFeedback.feedback="はずれ";
-            Debug.Log("はずれ");
+            //Debug.Log("はずれ");
             continuous = 0;
+            deleteCoin();
+            Debug.Log("削除");
+            score = CalcScore(score);
             ExportCSV.WriteCSV(time.ToString(), ansType.ToString(), i.ToString(), cgScript.hand_num.ToString(), "Out");
 	    }
 	}
@@ -211,11 +233,46 @@ public class GameRule : MonoBehaviour
         for(int i=0; i<100; i++){
             var vec1 = new Vector3(2.6f,3f,1.4f);
             GameObject coinObj = Instantiate(coinPrefab, vec1, new Quaternion(Random.Range(0f, 64f), Random.Range(0f, 64f), Random.Range(0f, 64f), 1.0f));
+	        coin_list.Add(coinObj);
+        }
+        Debug.Log(coin_list.Count);
+	}
+    
+    void deleteCoin(){
+        Debug.Log(coin_list.Count);
+        if (coin_list != null && coin_list.Count > 0){
+            int coin_num = coin_list.Count;
+            for (var num = coin_num -1; coin_num-101 <num; num--) {
+                Debug.Log(num);
+                Destroy (coin_list[num]); //オブジェクトの削除
+                coin_list.RemoveAt (num); //リストの削除
+            }
 	    }
+    }
+
+    int CalcScore(int score){
+        if(textFeedback.feedback=="正解"){
+
+            score += 100;
+
+        } else if(textFeedback.feedback=="はずれ"){
+
+            score -= 100;  
+            if(score<0){
+                score=0;     
+			}
+		}
+        scoreFeedback.scorefeedback = score.ToString();
+
+        return score;
+
 	}
 
     void FinishButton(){
-        UnityEditor.EditorApplication.isPlaying = false;
-        UnityEngine.Application.Quit();
-    }
+        #if UNITY_EDITOR
+          UnityEditor.EditorApplication.isPlaying = false;
+        #elif UNITY_STANDALONE
+          UnityEngine.Application.Quit();
+        #endif
+      }
 }
